@@ -13,7 +13,6 @@ def func(x):
 
 
 def sgd(func, x, target, lr, iteration, b = 0.3):
-    cost = []
     for i in range(iteration):
         evaluate = func(x)
         dx = target - evaluate
