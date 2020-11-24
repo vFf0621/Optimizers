@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Nov 22 19:24:26 2020
+
+@author: fguan
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+
+def func(x):
+    return np.sin(1/x) + x ** 2 - 3
+
+
+def sgd(func, x, target, lr, iteration, b = 0.3):
+    cost = []
+    for i in range(iteration):
+        evaluate = func(x)
+        dx = target - evaluate
+        dx = b * dx + (1 - b) * dx
+        x -= lr * dx
+        plt.plot(i, dx, "ro")
+        
+    
+    return x
