@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 import torch
 
 def func(x):
-    return torch.sin(x) + x ** 2
+    return torch.sin(x)
 
 def funcR3(x, y):
-    return torch.sin(x ** 2 * y)
+    return torch.sin(x * y)
 
 def sgd(func: Callable, x: float, target: float, lr: float, iteration: int) ->\
         float:
@@ -70,9 +70,9 @@ def sgd_m_d(func: Callable, x: float, target: float, lr: float, iteration: int,
         plt.plot(i, abs(ddx.item()), 'ro')
     return x.item()
 
-def sgd_m_R3(funcR3: Callable, x: float, y: float, target: float, lr: float, 
-    iteration: int, b: float=0.9) -> float:
-    """ Gradient descent in R3 space.
+def sgd_m__d_R3(funcR3: Callable, x: float, y: float, target: float, lr: float, 
+    iteration: int, a: float=0.0001, b: float=0.9) -> float:
+    """ Gradient descent in R3 space with momentum and lr decay.
     """
     lr = torch.tensor(lr, requires_grad=True)
     target = torch.tensor(target, requires_grad=True)
@@ -87,6 +87,7 @@ def sgd_m_R3(funcR3: Callable, x: float, y: float, target: float, lr: float,
         ddy = y.grad
         ddx = vx * b + (torch.tensor(1., requires_grad=True) - b) * ddx
         ddy = vy * b + (torch.tensor(1., requires_grad=True) - b) * ddy
+        lr = lr * torch.tensor(1.) / (torch.tensor(1.) + torch.tensor(i) * a)
         x = x - lr * ddx
         y = y - lr * ddy
         plt.plot(i, abs(ddx.item()), "ro")
