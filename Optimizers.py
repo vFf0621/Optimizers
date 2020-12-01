@@ -29,8 +29,8 @@ def sgd(func: Callable, x: float, target: float, lr: float, iteration: int) ->\
     target = torch.tensor(target)
     for i in range(iteration):
         x = torch.tensor(x, requires_grad=True)
-        evaluate = (target - func(x)) ** 2
-        evaluate.backward()
+        loss = (target - func(x)) ** 2
+        loss.backward()
         ddx = x.grad
         x = x - ddx * lr
         plt.plot(i, abs(ddx.item()), 'ro')
@@ -46,8 +46,8 @@ def sgd_m(func: Callable, x: float, target: float, lr: float, iteration: int,
     vx = torch.tensor(0.)
     for i in range(iteration):
         x = torch.tensor(x, requires_grad=True)
-        evaluate = (target - func(x)) ** 2
-        evaluate.backward()
+        loss = (target - func(x)) ** 2
+        loss.backward()
         ddx = x.grad
         ddx = vx * b + (torch.tensor(1., requires_grad=True) - b) * ddx
         x = x - ddx * lr
@@ -66,8 +66,8 @@ def sgd_m_d(func: Callable, x: float, target: float, lr: float, iteration: int,
     vx = torch.tensor(0.)
     for i in range(iteration):
         x = torch.tensor(x, requires_grad=True)
-        evaluate = (target - func(x)) ** 2
-        evaluate.backward()
+        loss = (target - func(x)) ** 2
+        loss.backward()
         ddx = x.grad
         ddx = vx * b + (torch.tensor(1.) - b) * ddx
         lr = lr * torch.tensor(1.) / (torch.tensor(1.) + torch.tensor(i) * a)
